@@ -1,7 +1,9 @@
   const router = require('express').Router();
-  const bcrypt = require('bcrypt');
-  const jwt = require('jsonwebtoken');
-  let User = require('../models/user.model');
+  const compare = require('bcrypt').compare;
+  const { sign } = require('jsonwebtoken');
+  const User = require('../models/user.model');
+  const { find, findOne } = require('../models/user.model');
+  
 
   router.get('/', async (req, res) => {
     try {
@@ -14,7 +16,7 @@
   });
 
   const genToken = (_id) =>{
-    return jwt.sign({_id},process.env.SECRET,{expiresIn:'5d'})
+    return sign({_id},process.env.SECRET,{expiresIn:'5d'})
   }
 
   //Login
@@ -25,12 +27,13 @@
       const user = await User.findOne({username})
 
       const token = genToken(user._id);
+      
 
       if(!user){
         return res.status(401).json({message: 'Username doesn\'t exist \n Register instead'})
       }
 
-      const isMatch = await bcrypt.compare(password,user.password);
+      const isMatch = await compare(password,user.password);
       
       if(!isMatch){
         return res.status(401).json({message: 'Invalid Password'})
@@ -67,4 +70,5 @@
     .catch(err => res.status(400).json('Error' + err))
     }
   });
+  
     module.exports = router;

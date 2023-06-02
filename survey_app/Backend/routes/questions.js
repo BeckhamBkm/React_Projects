@@ -1,5 +1,6 @@
 const router = require('express').Router();
-let Question = require('../models/questions.model');
+const Question = require('../models/questions.model');
+
 
 router.get('/', async (req, res) => {
   try {
@@ -7,8 +8,11 @@ router.get('/', async (req, res) => {
     res.status(200).json(questions);
   } catch (err) {
     console.error(err);
-    res.status(500).json({error: 'Error retrieving questions'});
+    res.status(500).json({error: `Error retrieving questions: ${err.message}`});
   }
 });
+
+
+
     
-  module.exports = router;
+module.exports = router;
