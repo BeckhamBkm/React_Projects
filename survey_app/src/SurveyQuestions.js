@@ -11,7 +11,7 @@ function SurveyQuestions() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState(0);
   const {user, dispatch} = useAuthContext();
-  const [userAnswers, setUserAnswers] = useState([]);
+  const [, setUserAnswers] = useState([]);
 
 
   const onLogout = () =>{
